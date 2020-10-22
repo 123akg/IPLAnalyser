@@ -1,6 +1,6 @@
 package com.capgemini.model;
 
 public enum  SortedField {
-    AVERAGE;
+    AVERAGE, STRIKE_RATE;
 }
 
