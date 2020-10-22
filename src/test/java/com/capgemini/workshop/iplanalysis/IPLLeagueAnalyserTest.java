@@ -25,12 +25,25 @@ public class IPLLeagueAnalyserTest {
         String result = cricketLeagueAnalyser.getTopBattingAverage(SortedField.AVERAGE);
         MostRunCSV[] iplMostRunsCSVS=new Gson().fromJson(result, MostRunCSV[].class);
         Assert.assertEquals(83.2, iplMostRunsCSVS[0].avg, 0.0);
+    
     }
     	catch(IPLLeagueException e)
     	{
     		e.printStackTrace();
     	}
-
-    	
     }
+    @Test
+    public void givenIPLMostRunData_WhenSorted_ShouldReturnTopStrikeRate() throws IPLLeagueException {
+        try{
+        	cricketLeagueAnalyser.loadIplData(IPL_MOST_RUNS_CSV_PATH);
+            String sortedStrikeRateData = cricketLeagueAnalyser.getTopBattingStrikeRate(SortedField.STRIKE_RATE);
+            MostRunCSV[] iplMostRunsCSVS = new Gson().fromJson(sortedStrikeRateData, MostRunCSV[].class);
+            Assert.assertEquals(333.33,iplMostRunsCSVS[0].sr, 0.0);
+        }
+        catch (IPLLeagueException e){
+        	e.printStackTrace();
+
+        } 
+    }
+    
 }

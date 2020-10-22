@@ -14,9 +14,11 @@ import java.util.*;
 
 public class IPLLeagueAnalyser {
     List<MostRunCSV> mostRunsCSVList;
+    Map<SortedField, Comparator<MostRunCSV>> sortedMap = new HashMap<>();
 
     public IPLLeagueAnalyser() {
         mostRunsCSVList=new ArrayList<>();
+        this.sortedMap.put(SortedField.STRIKE_RATE,Comparator.comparing(ipldata -> ipldata.sr));
     }
 
     public int loadIplData(String csvFilePath) {
@@ -46,12 +48,27 @@ public class IPLLeagueAnalyser {
             throw new IPLLeagueException("No Records",IPLLeagueException.ExceptionType.IPL_FILE_PROBLEM);
         }
         Comparator<MostRunCSV> mostRunsCSVComparator=Comparator.comparing(census-> census.avg);
+        
         sort(mostRunsCSVComparator);
         Collections.reverse(mostRunsCSVList);
         String sortedAverage=new Gson().toJson(mostRunsCSVList);
         return sortedAverage;
     }
 
+    public String getTopBattingStrikeRate(SortedField sortedField) {
+        if (mostRunsCSVList==null || mostRunsCSVList.size()==0)
+        {
+            throw new IPLLeagueException("No Records",IPLLeagueException.ExceptionType.IPL_FILE_PROBLEM);
+        }
+        Comparator<MostRunCSV> mostRunsCSVComparator=Comparator.comparing(census-> census.sr);
+        
+        sort(mostRunsCSVComparator);
+        Collections.reverse(mostRunsCSVList);
+        String sortedStrikeRate =new Gson().toJson(mostRunsCSVList);
+        return sortedStrikeRate;
+    }
+    
+    
     public void sort(Comparator<MostRunCSV> mostRunsCSVComparator) {
         for (int i = 0; i< this.mostRunsCSVList.size()-1; i++)
         {
